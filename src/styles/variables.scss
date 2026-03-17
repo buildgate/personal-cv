@@ -1,0 +1,34 @@
+// 主色调 - 柔和的橙色和绿色
+$primary-color: #e8a87c;        // 柔和橙色
+$primary-light: #f5d0b5;        // 浅橙色
+$primary-dark: #c48b5a;         // 深橙色
+
+$secondary-color: #85a98f;      // 柔和绿色
+$secondary-light: #b8d4be;      // 浅绿色
+$secondary-dark: #5f8a6a;       // 深绿色
+
+$accent-color: #a8d5ba;         // 点缀绿色
+
+// 背景色
+$bg-dark: #2d3436;              // 深色背景
+$bg-light: #faf9f7;             // 浅色背景
+$bg-cream: #f5f3ef;             // 奶油色背景
+
+// 文字颜色
+$text-primary: #2d3436;         // 主要文字
+$text-secondary: #636e72;       // 次要文字
+$text-light: #b2bec3;           // 浅色文字
+
+// 卡片背景
+$card-bg: rgba(255, 255, 255, 0.95);
+
+// 阴影
+$shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+$shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.08);
+$shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.08);
+$shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.08), 0 8px 10px -6px rgb(0 0 0 / 0.08);
+
+// 渐变
+$gradient-primary: linear-gradient(135deg, $primary-color, $primary-dark);
+$gradient-secondary: linear-gradient(135deg, $secondary-color, $secondary-dark);
+$gradient-mixed: linear-gradient(135deg, $primary-light, $secondary-light);
