@@ -45,6 +45,14 @@
         {
           "src": "/images/e3429482-565e-4cb0-981b-1ad6518767e2.png",
           "description": "创作者收益分析组件"
+        },
+        {
+          "src": "/images/1166e3d261689bd200950d2c88a712be.jpg",
+          "description": "创作者任务管理流程"
+        },
+        {
+          "src": "/images/91421407658546EDA0BC81DC59925AC3.png",
+          "description": "账号数据增长趋势"
         }
       ],
       "achievements": [
@@ -82,10 +90,20 @@
       "name": "创作者数据平台",
       "description": "为内容创作者提供数据分析、内容管理、收益统计等一站式服务平台",
       "tech": ["Vue 3", "TypeScript", "ECharts", "Node.js"],
-      "image": {
-        "src": "/images/1166e3d261689bd200950d2c88a712be.jpg",
-        "description": "创作者数据总览大屏"
-      },
+      "images": [
+        {
+          "src": "/images/1166e3d261689bd200950d2c88a712be.jpg",
+          "description": "创作者数据总览大屏"
+        },
+        {
+          "src": "/images/91421407658546EDA0BC81DC59925AC3.png",
+          "description": "内容发布与管理视图"
+        },
+        {
+          "src": "/images/e3429482-565e-4cb0-981b-1ad6518767e2.png",
+          "description": "创作者画像详情页"
+        }
+      ],
       "link": "https://github.com/zhangsan/creator-platform"
     },
     {
@@ -93,10 +111,20 @@
       "name": "可视化搭建引擎",
       "description": "低代码平台核心引擎，支持拖拽式页面搭建，动态组件加载",
       "tech": ["React", "DnD Kit", "JSON Schema", "Webpack"],
-      "image": {
-        "src": "/images/91421407658546EDA0BC81DC59925AC3.png",
-        "description": "可视化搭建画布"
-      },
+      "images": [
+        {
+          "src": "/images/91421407658546EDA0BC81DC59925AC3.png",
+          "description": "可视化搭建画布"
+        },
+        {
+          "src": "/images/e3429482-565e-4cb0-981b-1ad6518767e2.png",
+          "description": "组件库配置面板"
+        },
+        {
+          "src": "/images/1166e3d261689bd200950d2c88a712be.jpg",
+          "description": "页面模板市场"
+        }
+      ],
       "link": "https://github.com/zhangsan/visual-builder"
     },
     {
@@ -104,10 +132,20 @@
       "name": "前端监控SDK",
       "description": "轻量级前端性能监控与错误追踪工具，支持多种框架",
       "tech": ["TypeScript", "Web Vitals", "Sentry"],
-      "image": {
-        "src": "/images/e3429482-565e-4cb0-981b-1ad6518767e2.png",
-        "description": "监控指标展示模块"
-      },
+      "images": [
+        {
+          "src": "/images/e3429482-565e-4cb0-981b-1ad6518767e2.png",
+          "description": "监控指标展示模块"
+        },
+        {
+          "src": "/images/1166e3d261689bd200950d2c88a712be.jpg",
+          "description": "性能趋势分析图表"
+        },
+        {
+          "src": "/images/91421407658546EDA0BC81DC59925AC3.png",
+          "description": "告警通知中心"
+        }
+      ],
       "link": "https://github.com/zhangsan/monitor-sdk"
     }
   ]

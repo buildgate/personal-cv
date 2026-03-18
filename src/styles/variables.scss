@@ -22,6 +22,13 @@ $text-light: #b2bec3;           // 浅色文字
 // 卡片背景
 $card-bg: rgba(255, 255, 255, 0.95);
 
+// 拟态风格
+$neumorphism-bg: #f7f7f4;
+$neumorphism-shadow: 12px 12px 24px rgba(45, 52, 54, 0.12),
+  -12px -12px 24px rgba(255, 255, 255, 0.9);
+$neumorphism-shadow-inset: inset 6px 6px 12px rgba(45, 52, 54, 0.12),
+  inset -6px -6px 12px rgba(255, 255, 255, 0.85);
+
 // 阴影
 $shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
 $shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.08);

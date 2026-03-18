@@ -25,7 +25,7 @@
             class="experience-gallery"
           >
             <div
-              v-for="(image, imgIndex) in item.images"
+              v-for="(image, imgIndex) in getVisibleImages(item)"
               :key="`${item.id}-image-${imgIndex}`"
               class="gallery-item"
             >
@@ -38,6 +38,14 @@
               </p>
             </div>
           </div>
+          <button
+            v-if="item.images && item.images.length > 3"
+            type="button"
+            class="gallery-toggle"
+            @click="toggleGallery(item.id)"
+          >
+            {{ isExpanded(item.id) ? "收起" : "展开更多" }}
+          </button>
           <div class="achievements">
             <h4 class="achievements-title">主要成就</h4>
             <ul class="achievements-list">
@@ -90,6 +98,22 @@ const getImageDescription = (image, fallback) =>
 const sectionRef = ref(null);
 const isVisible = ref(true);
 const itemRefs = ref([]);
+const expandedGalleries = ref(new Set());
+
+const isExpanded = (id) => expandedGalleries.value.has(id);
+
+const toggleGallery = (id) => {
+  const next = new Set(expandedGalleries.value);
+  if (next.has(id)) {
+    next.delete(id);
+  } else {
+    next.add(id);
+  }
+  expandedGalleries.value = next;
+};
+
+const getVisibleImages = (item) =>
+  isExpanded(item.id) ? item.images : item.images.slice(0, 3);
 
 let ctx = null;
 
@@ -241,6 +265,25 @@ onUnmounted(() => {
   margin-bottom: 1.5rem;
 }
 
+.gallery-toggle {
+  align-self: flex-start;
+  margin: 0 0 1.5rem;
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: white;
+  color: $primary-dark;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    border-color: rgba($primary-color, 0.5);
+    color: $primary-color;
+    box-shadow: $shadow-sm;
+  }
+}
+
 .gallery-item {
   border-radius: 12px;
   overflow: hidden;
@@ -253,6 +296,12 @@ onUnmounted(() => {
   height: 140px;
   object-fit: cover;
   display: block;
+  transition: transform 0.5s ease;
+  transform-origin: center;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.05);
 }
 
 .gallery-caption {
