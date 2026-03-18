@@ -13,7 +13,10 @@
           :ref="(el) => (cardRefs[index] = el)"
         >
           <div class="project-image">
-            <img :src="item.image" :alt="item.name" />
+            <img
+              :src="getImageSrc(item.image)"
+              :alt="getImageDescription(item.image, item.name)"
+            />
             <div class="project-overlay">
               <a :href="item.link" target="_blank" class="btn btn-primary">
                 <svg
@@ -39,6 +42,9 @@
           <div class="project-info">
             <h3 class="project-name">{{ item.name }}</h3>
             <p class="project-description">{{ item.description }}</p>
+            <p class="project-image-caption">
+              {{ getImageDescription(item.image, item.name) }}
+            </p>
             <div class="tech-tags">
               <span v-for="tech in item.tech" :key="tech" class="tag">
                 {{ tech }}
@@ -64,6 +70,11 @@ const props = defineProps({
     default: () => [],
   },
 });
+
+const getImageSrc = (image) => (typeof image === "string" ? image : image?.src);
+
+const getImageDescription = (image, fallback) =>
+  typeof image === "string" ? fallback : image?.description || fallback;
 
 const sectionRef = ref(null);
 const isVisible = ref(true);
@@ -214,6 +225,13 @@ onUnmounted(() => {
   color: $text-secondary;
   line-height: 1.6;
   margin-bottom: 1rem;
+}
+
+.project-image-caption {
+  font-size: 0.95rem;
+  color: $text-secondary;
+  margin-bottom: 1rem;
+  font-style: italic;
 }
 
 .tech-tags {

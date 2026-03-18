@@ -30,9 +30,12 @@
               class="gallery-item"
             >
               <img
-                :src="image"
-                :alt="`${item.company} 项目图 ${imgIndex + 1}`"
+                :src="getImageSrc(image)"
+                :alt="getImageDescription(image, item.company)"
               />
+              <p class="gallery-caption">
+                {{ getImageDescription(image, item.company) }}
+              </p>
             </div>
           </div>
           <div class="achievements">
@@ -78,6 +81,11 @@ const props = defineProps({
     default: () => [],
   },
 });
+
+const getImageSrc = (image) => (typeof image === "string" ? image : image?.src);
+
+const getImageDescription = (image, fallback) =>
+  typeof image === "string" ? fallback : image?.description || fallback;
 
 const sectionRef = ref(null);
 const isVisible = ref(true);
@@ -245,6 +253,14 @@ onUnmounted(() => {
   height: 140px;
   object-fit: cover;
   display: block;
+}
+
+.gallery-caption {
+  padding: 0.5rem 0.75rem 0.75rem;
+  font-size: 0.9rem;
+  color: $text-secondary;
+  line-height: 1.4;
+  background: rgba(255, 255, 255, 0.8);
 }
 
 .achievements {

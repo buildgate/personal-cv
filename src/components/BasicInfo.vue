@@ -5,10 +5,6 @@
     </div>
     <div class="parallax-content">
       <div class="hero-content" ref="heroContent">
-        <div class="avatar-wrapper" ref="avatarRef">
-          <img :src="data.avatar" :alt="data.name" class="avatar" />
-          <div class="avatar-ring"></div>
-        </div>
         <h1 class="name" ref="nameRef">{{ data.name }}</h1>
         <p class="title" ref="titleRef">{{ data.title }}</p>
         <p class="summary" ref="summaryRef">{{ data.summary }}</p>
@@ -140,7 +136,6 @@ const props = defineProps({
 
 const sectionRef = ref(null);
 const heroContent = ref(null);
-const avatarRef = ref(null);
 const nameRef = ref(null);
 const titleRef = ref(null);
 const summaryRef = ref(null);
@@ -154,20 +149,11 @@ onMounted(() => {
   ctx = gsap.context(() => {
     const tl = gsap.timeline({ defaults: { ease: "power2.out" } });
 
-    tl.from(avatarRef.value, {
+    tl.from(nameRef.value, {
       opacity: 0,
-      scale: 0.5,
-      duration: 0.8,
+      y: 30,
+      duration: 0.6,
     })
-      .from(
-        nameRef.value,
-        {
-          opacity: 0,
-          y: 30,
-          duration: 0.6,
-        },
-        "-=0.4",
-      )
       .from(
         titleRef.value,
         {
@@ -213,14 +199,6 @@ onMounted(() => {
         },
         "-=0.2",
       );
-
-    // Floating animation for avatar ring
-    gsap.to(".avatar-ring", {
-      rotation: 360,
-      duration: 8,
-      repeat: -1,
-      ease: "none",
-    });
   }, sectionRef.value);
 });
 
@@ -259,35 +237,6 @@ onUnmounted(() => {
   text-align: center;
   color: white;
   padding: 2rem;
-}
-
-.avatar-wrapper {
-  position: relative;
-  width: 180px;
-  height: 180px;
-  margin: 0 auto 2rem;
-}
-
-.avatar {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 4px solid rgba(255, 255, 255, 0.2);
-  position: relative;
-  z-index: 1;
-}
-
-.avatar-ring {
-  position: absolute;
-  top: -10px;
-  left: -10px;
-  right: -10px;
-  bottom: -10px;
-  border-radius: 50%;
-  border: 2px solid transparent;
-  border-top-color: $secondary-color;
-  border-right-color: $primary-color;
 }
 
 .name {
@@ -386,11 +335,6 @@ onUnmounted(() => {
 
   .title {
     font-size: 1.25rem;
-  }
-
-  .avatar-wrapper {
-    width: 140px;
-    height: 140px;
   }
 
   .contact-info {

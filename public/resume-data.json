@@ -34,9 +34,18 @@
       "period": "2021 - 至今",
       "description": "负责抖音创作者平台的前端架构设计与开发，带领5人团队完成多个核心功能模块。",
       "images": [
-        "/images/1166e3d261689bd200950d2c88a712be.jpg",
-        "/images/91421407658546EDA0BC81DC59925AC3.png",
-        "/images/e3429482-565e-4cb0-981b-1ad6518767e2.png"
+        {
+          "src": "/images/1166e3d261689bd200950d2c88a712be.jpg",
+          "description": "抖音创作者平台数据看板"
+        },
+        {
+          "src": "/images/91421407658546EDA0BC81DC59925AC3.png",
+          "description": "内容管理模块核心页面"
+        },
+        {
+          "src": "/images/e3429482-565e-4cb0-981b-1ad6518767e2.png",
+          "description": "创作者收益分析组件"
+        }
       ],
       "achievements": [
         "主导微前端架构改造，将首屏加载时间优化40%",
@@ -51,8 +60,14 @@
       "period": "2017 - 2021",
       "description": "参与淘宝商家后台系统开发，负责订单管理、数据分析等核心模块。",
       "images": [
-        "/images/1166e3d261689bd200950d2c88a712be.jpg",
-        "/images/91421407658546EDA0BC81DC59925AC3.png"
+        {
+          "src": "/images/1166e3d261689bd200950d2c88a712be.jpg",
+          "description": "订单管理流程界面"
+        },
+        {
+          "src": "/images/91421407658546EDA0BC81DC59925AC3.png",
+          "description": "商家数据分析看板"
+        }
       ],
       "achievements": [
         "开发可视化搭建平台，支持运营自主配置活动页面",
@@ -67,7 +82,10 @@
       "name": "创作者数据平台",
       "description": "为内容创作者提供数据分析、内容管理、收益统计等一站式服务平台",
       "tech": ["Vue 3", "TypeScript", "ECharts", "Node.js"],
-      "image": "/images/1166e3d261689bd200950d2c88a712be.jpg",
+      "image": {
+        "src": "/images/1166e3d261689bd200950d2c88a712be.jpg",
+        "description": "创作者数据总览大屏"
+      },
       "link": "https://github.com/zhangsan/creator-platform"
     },
     {
@@ -75,7 +93,10 @@
       "name": "可视化搭建引擎",
       "description": "低代码平台核心引擎，支持拖拽式页面搭建，动态组件加载",
       "tech": ["React", "DnD Kit", "JSON Schema", "Webpack"],
-      "image": "/images/91421407658546EDA0BC81DC59925AC3.png",
+      "image": {
+        "src": "/images/91421407658546EDA0BC81DC59925AC3.png",
+        "description": "可视化搭建画布"
+      },
       "link": "https://github.com/zhangsan/visual-builder"
     },
     {
@@ -83,7 +104,10 @@
       "name": "前端监控SDK",
       "description": "轻量级前端性能监控与错误追踪工具，支持多种框架",
       "tech": ["TypeScript", "Web Vitals", "Sentry"],
-      "image": "/images/e3429482-565e-4cb0-981b-1ad6518767e2.png",
+      "image": {
+        "src": "/images/e3429482-565e-4cb0-981b-1ad6518767e2.png",
+        "description": "监控指标展示模块"
+      },
       "link": "https://github.com/zhangsan/monitor-sdk"
     }
   ]

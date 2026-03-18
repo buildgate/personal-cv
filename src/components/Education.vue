@@ -3,18 +3,15 @@
     <div class="section-background"></div>
     <div class="parallax-content">
       <h2 class="section-title on-dark" ref="titleRef">教育经历</h2>
-      <div class="timeline">
+      <div class="education-list">
         <div
           v-for="(item, index) in data"
           :key="item.id"
-          class="timeline-item"
+          class="education-item"
           :ref="(el) => (itemRefs[index] = el)"
         >
-          <div class="timeline-marker">
-            <div class="marker-dot"></div>
-          </div>
-          <div class="timeline-content card">
-            <div class="timeline-header">
+          <div class="education-card card">
+            <div class="education-header">
               <h3 class="school-name">{{ item.school }}</h3>
               <span class="period">{{ item.period }}</span>
             </div>
@@ -101,65 +98,24 @@ onUnmounted(() => {
   inset: 0;
 }
 
-.timeline {
-  position: relative;
+.education-list {
   max-width: 900px;
   margin: 0 auto;
   padding: 2rem 0;
-}
-
-.timeline::before {
-  content: "";
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 4px;
-  height: 100%;
-  background: $gradient-mixed;
-  border-radius: 2px;
-}
-
-.timeline-item {
-  position: relative;
   display: flex;
-  margin-bottom: 3rem;
-  width: 50%;
-  padding-right: 3rem;
+  flex-direction: column;
+  gap: 2rem;
 }
 
-.timeline-item:nth-child(even) {
-  margin-left: 50%;
-  padding-right: 0;
-  padding-left: 3rem;
+.education-item {
+  position: relative;
 }
 
-.timeline-marker {
-  position: absolute;
-  left: 100%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1;
+.education-card {
+  padding: 2rem;
 }
 
-.timeline-item:nth-child(even) .timeline-marker {
-  left: 0;
-  transform: translate(-50%, -50%);
-}
-
-.marker-dot {
-  width: 20px;
-  height: 20px;
-  background: $gradient-mixed;
-  border-radius: 50%;
-  border: 4px solid white;
-  box-shadow: $shadow-md;
-}
-
-.timeline-content {
-  flex: 1;
-}
-
-.timeline-header {
+.education-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -197,26 +153,7 @@ onUnmounted(() => {
 }
 
 @media (max-width: 768px) {
-  .timeline::before {
-    left: 20px;
-  }
-
-  .timeline-item,
-  .timeline-item:nth-child(even) {
-    width: 100%;
-    margin-left: 0;
-    padding-left: 50px;
-    padding-right: 0;
-  }
-
-  .timeline-marker,
-  .timeline-item:nth-child(even) .timeline-marker {
-    left: 20px;
-    right: auto;
-    transform: translate(-50%, -50%);
-  }
-
-  .timeline-header {
+  .education-header {
     flex-direction: column;
   }
 }
