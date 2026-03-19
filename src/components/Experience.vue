@@ -2,53 +2,51 @@
   <section class="experience-section" ref="sectionRef">
     <div class="section-background"></div>
     <div class="parallax-content">
-      <h2 class="section-title fade-in on-dark" :class="{ visible: isVisible }">
-        工作经历
-      </h2>
+      <h2 class="section-title on-dark" ref="titleRef">工作经历</h2>
       <div class="experience-list">
         <div
           v-for="(item, index) in data"
           :key="item.id"
-          class="experience-item card"
+          class="experience-item"
           :ref="(el) => (itemRefs[index] = el)"
         >
-          <div class="experience-header">
-            <div class="company-info">
+          <div class="experience-card card">
+            <div class="experience-header">
               <h3 class="company-name">{{ item.company }}</h3>
-              <p class="position">{{ item.position }}</p>
+              <span class="period">{{ item.period }}</span>
             </div>
-            <span class="period-badge">{{ item.period }}</span>
-          </div>
-          <p class="description">{{ item.description }}</p>
-          <div
-            v-if="item.images && item.images.length"
-            class="experience-gallery"
-          >
+            <p class="position">{{ item.position }}</p>
+            <p class="description">{{ item.description }}</p>
             <div
-              v-for="(image, imgIndex) in getVisibleImages(item)"
-              :key="`${item.id}-image-${imgIndex}`"
-              class="gallery-item"
+              v-if="item.images && item.images.length"
+              class="experience-gallery"
             >
-              <img
-                :src="getImageSrc(image)"
-                :alt="getImageDescription(image, item.company)"
-              />
-              <p class="gallery-caption">
-                {{ getImageDescription(image, item.company) }}
-              </p>
+              <div
+                v-for="(image, imgIndex) in getVisibleImages(item)"
+                :key="`${item.id}-image-${imgIndex}`"
+                class="gallery-item"
+              >
+                <img
+                  :src="getImageSrc(image)"
+                  :alt="getImageDescription(image, item.company)"
+                />
+                <p class="gallery-caption">
+                  {{ getImageDescription(image, item.company) }}
+                </p>
+              </div>
             </div>
-          </div>
-          <button
-            v-if="item.images && item.images.length > 3"
-            type="button"
-            class="gallery-toggle"
-            @click="toggleGallery(item.id)"
-          >
-            {{ isExpanded(item.id) ? "收起" : "展开更多" }}
-          </button>
-          <div class="achievements">
-            <h4 class="achievements-title">主要成就</h4>
-            <ul class="achievements-list">
+            <button
+              v-if="item.images && item.images.length > 3"
+              type="button"
+              class="gallery-toggle"
+              @click="toggleGallery(item.id)"
+            >
+              {{ isExpanded(item.id) ? "收起" : "展开更多" }}
+            </button>
+            <ul
+              v-if="item.achievements && item.achievements.length"
+              class="achievements-list"
+            >
               <li v-for="(achievement, i) in item.achievements" :key="i">
                 <img
                   src="@/assets/icons/check-circle.svg"
@@ -66,7 +64,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted, onUnmounted, watch, nextTick } from "vue";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -79,15 +77,15 @@ const props = defineProps({
   },
 });
 
+const sectionRef = ref(null);
+const titleRef = ref(null);
+const itemRefs = ref([]);
+const expandedGalleries = ref(new Set());
+
 const getImageSrc = (image) => (typeof image === "string" ? image : image?.src);
 
 const getImageDescription = (image, fallback) =>
   typeof image === "string" ? fallback : image?.description || fallback;
-
-const sectionRef = ref(null);
-const isVisible = ref(true);
-const itemRefs = ref([]);
-const expandedGalleries = ref(new Set());
 
 const isExpanded = (id) => expandedGalleries.value.has(id);
 
@@ -106,11 +104,18 @@ const getVisibleImages = (item) =>
 
 let ctx = null;
 
-onMounted(() => {
-  // GSAP animations
+const initAnimations = async () => {
+  if (ctx) {
+    ctx.revert();
+    ctx = null;
+  }
+
+  if (!sectionRef.value) return;
+
+  await nextTick();
+
   ctx = gsap.context(() => {
-    // Section title animation
-    gsap.from(".experience-section .section-title", {
+    gsap.from(titleRef.value, {
       scrollTrigger: {
         trigger: sectionRef.value,
         start: "top 80%",
@@ -122,7 +127,6 @@ onMounted(() => {
       ease: "power2.out",
     });
 
-    // Experience items animation
     itemRefs.value.forEach((el, index) => {
       if (el) {
         gsap.from(el, {
@@ -132,17 +136,29 @@ onMounted(() => {
             toggleActions: "play none none reverse",
           },
           opacity: 0,
-          x: index % 2 === 0 ? -80 : 80,
+          x: index % 2 === 0 ? -100 : 100,
           duration: 0.8,
           delay: index * 0.1,
           ease: "power2.out",
         });
       }
     });
-
-    isVisible.value = true;
   }, sectionRef.value);
+
+  ScrollTrigger.refresh();
+};
+
+onMounted(() => {
+  initAnimations();
 });
+
+watch(
+  () => props.data,
+  () => {
+    initAnimations();
+  },
+  { deep: true },
+);
 
 onUnmounted(() => {
   if (ctx) ctx.revert();
@@ -165,133 +181,110 @@ onUnmounted(() => {
     > .experience-list {
       max-width: 900px;
       margin: 0 auto;
+      padding: 32px 0;
       display: flex;
       flex-direction: column;
       gap: 32px;
 
       > .experience-item {
         position: relative;
-        overflow: hidden;
 
-        &::before {
-          content: "";
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 4px;
-          height: 100%;
-          background: $gradient-mixed;
-        }
+        > .experience-card {
+          padding: 32px;
 
-        > .experience-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: flex-start;
-          margin-bottom: 16px;
-          flex-wrap: wrap;
-          gap: 16px;
-
-          > .company-info {
-            flex: 1;
+          > .experience-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 8px;
 
             > .company-name {
               font-size: 24px;
               font-weight: 700;
               color: $text-primary;
-              margin: 0 0 4px;
-            }
-
-            > .position {
-              font-size: 17.6px;
-              color: $primary-dark;
-              font-weight: 500;
               margin: 0;
             }
-          }
 
-          > .period-badge {
-            background: $gradient-primary;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 25px;
-            font-size: 14px;
-            font-weight: 600;
-            white-space: nowrap;
-          }
-        }
-
-        > .description {
-          color: $text-secondary;
-          line-height: 1.7;
-          margin-bottom: 24px;
-        }
-
-        > .experience-gallery {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-          gap: 16px;
-          margin-bottom: 24px;
-
-          > .gallery-item {
-            border-radius: 12px;
-            overflow: hidden;
-            background: rgba(255, 255, 255, 0.6);
-            box-shadow: $shadow-md;
-
-            > img {
-              width: 100%;
-              height: 140px;
-              object-fit: cover;
-              display: block;
-              transition: transform 0.5s ease;
-              transform-origin: center;
+            > .period {
+              background: $gradient-mixed;
+              color: white;
+              padding: 4px 12px;
+              border-radius: 20px;
+              font-size: 14px;
+              font-weight: 500;
+              white-space: nowrap;
             }
+          }
 
-            &:hover {
+          > .position {
+            font-size: 17.6px;
+            color: $primary-dark;
+            margin-bottom: 12px;
+            font-weight: 500;
+          }
+
+          > .description {
+            color: $text-secondary;
+            line-height: 1.7;
+            margin-bottom: 16px;
+          }
+
+          > .experience-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-bottom: 16px;
+
+            > .gallery-item {
+              border-radius: 12px;
+              overflow: hidden;
+              background: rgba(255, 255, 255, 0.6);
+              box-shadow: $shadow-md;
+
               > img {
-                transform: scale(1.05);
+                width: 100%;
+                height: 140px;
+                object-fit: cover;
+                display: block;
+                transition: transform 0.5s ease;
+                transform-origin: center;
+              }
+
+              &:hover {
+                > img {
+                  transform: scale(1.05);
+                }
+              }
+
+              > .gallery-caption {
+                padding: 8px 12px 12px;
+                font-size: 14.4px;
+                color: $text-secondary;
+                line-height: 1.4;
+                background: rgba(255, 255, 255, 0.8);
               }
             }
+          }
 
-            > .gallery-caption {
-              padding: 8px 12px 12px;
-              font-size: 14.4px;
-              color: $text-secondary;
-              line-height: 1.4;
-              background: rgba(255, 255, 255, 0.8);
+          > .gallery-toggle {
+            align-self: flex-start;
+            margin: 0 0 16px;
+            padding: 6.4px 16px;
+            border-radius: 999px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            background: white;
+            color: $primary-dark;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+
+            &:hover {
+              border-color: rgba($primary-color, 0.5);
+              color: $primary-color;
+              box-shadow: $shadow-sm;
             }
-          }
-        }
-
-        > .gallery-toggle {
-          align-self: flex-start;
-          margin: 0 0 24px;
-          padding: 6.4px 16px;
-          border-radius: 999px;
-          border: 1px solid rgba(0, 0, 0, 0.1);
-          background: white;
-          color: $primary-dark;
-          font-size: 14px;
-          cursor: pointer;
-          transition: all 0.3s ease;
-
-          &:hover {
-            border-color: rgba($primary-color, 0.5);
-            color: $primary-color;
-            box-shadow: $shadow-sm;
-          }
-        }
-
-        > .achievements {
-          background: rgba($primary-light, 0.3);
-          border-radius: 12px;
-          padding: 20px;
-
-          > .achievements-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: $text-primary;
-            margin: 0 0 12px;
           }
 
           > .achievements-list {
@@ -328,21 +321,9 @@ onUnmounted(() => {
     > .parallax-content {
       > .experience-list {
         > .experience-item {
-          > .experience-header {
-            flex-direction: column;
-
-            > .period-badge {
-              align-self: flex-start;
-            }
-          }
-
-          > .experience-gallery {
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-
-            > .gallery-item {
-              > img {
-                height: 120px;
-              }
+          > .experience-card {
+            > .experience-header {
+              flex-direction: column;
             }
           }
         }

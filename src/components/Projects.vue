@@ -2,69 +2,69 @@
   <section class="projects-section" ref="sectionRef">
     <div class="section-background"></div>
     <div class="parallax-content">
-      <h2 class="section-title fade-in on-dark" :class="{ visible: isVisible }">
-        个人作品
-      </h2>
-      <div class="projects-grid">
+      <h2 class="section-title on-dark" ref="titleRef">个人作品</h2>
+      <div class="projects-list">
         <div
           v-for="(item, index) in data"
           :key="item.id"
-          class="project-card"
-          :ref="(el) => (cardRefs[index] = el)"
+          class="projects-item"
+          :ref="(el) => (itemRefs[index] = el)"
         >
-          <div class="project-image">
-            <img
-              :src="getImageSrc(item, index)"
-              :alt="getImageDescription(item, item.name, index)"
-            />
-            <div class="project-image-caption">
-              {{ getImageDescription(item, item.name, index) }}
+          <div class="projects-card card">
+            <div class="projects-header">
+              <h3 class="project-name">{{ item.name }}</h3>
             </div>
-            <div class="carousel-controls" v-if="getImages(item).length > 1">
-              <button
-                type="button"
-                class="carousel-btn"
-                @click.stop="prevImage(index, getImages(item).length)"
-                aria-label="上一张"
-              >
-                ‹
-              </button>
-              <button
-                type="button"
-                class="carousel-btn"
-                @click.stop="nextImage(index, getImages(item).length)"
-                aria-label="下一张"
-              >
-                ›
-              </button>
-            </div>
-            <div class="carousel-dots" v-if="getImages(item).length > 1">
-              <span
-                v-for="(image, dotIndex) in getImages(item)"
-                :key="`${item.id}-dot-${dotIndex}`"
-                class="dot"
-                :class="{ active: getActiveIndex(index) === dotIndex }"
-                @click.stop="setImage(index, dotIndex)"
-              ></span>
-            </div>
-          </div>
-          <div class="project-info">
-            <h3 class="project-name">{{ item.name }}</h3>
             <p class="project-description">{{ item.description }}</p>
-            <div class="tech-tags">
+            <div class="project-image" v-if="getImages(item).length">
+              <img
+                :src="getImageSrc(item, index)"
+                :alt="getImageDescription(item, item.name, index)"
+              />
+              <div class="project-image-caption">
+                {{ getImageDescription(item, item.name, index) }}
+              </div>
+              <div class="carousel-controls" v-if="getImages(item).length > 1">
+                <button
+                  type="button"
+                  class="carousel-btn"
+                  @click.stop="prevImage(index, getImages(item).length)"
+                  aria-label="上一张"
+                >
+                  ‹
+                </button>
+                <button
+                  type="button"
+                  class="carousel-btn"
+                  @click.stop="nextImage(index, getImages(item).length)"
+                  aria-label="下一张"
+                >
+                  ›
+                </button>
+              </div>
+              <div class="carousel-dots" v-if="getImages(item).length > 1">
+                <span
+                  v-for="(image, dotIndex) in getImages(item)"
+                  :key="`${item.id}-dot-${dotIndex}`"
+                  class="dot"
+                  :class="{ active: getActiveIndex(index) === dotIndex }"
+                  @click.stop="setImage(index, dotIndex)"
+                ></span>
+              </div>
+            </div>
+            <div v-if="item.tech && item.tech.length" class="tech-tags">
               <span v-for="tech in item.tech" :key="tech" class="tag">
                 {{ tech }}
               </span>
             </div>
+            <a
+              v-if="item.link"
+              :href="item.link"
+              target="_blank"
+              class="btn btn-primary project-link"
+            >
+              查看项目
+            </a>
           </div>
-          <a
-            :href="item.link"
-            target="_blank"
-            class="btn btn-primary project-link"
-          >
-            <img src="@/assets/icons/github.svg" alt="项目链接" class="icon" />
-            查看项目
-          </a>
         </div>
       </div>
     </div>
@@ -72,7 +72,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted, onUnmounted, watch, nextTick } from "vue";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -126,16 +126,23 @@ const getImageDescription = (item, fallback, cardIndex) => {
 };
 
 const sectionRef = ref(null);
-const isVisible = ref(true);
-const cardRefs = ref([]);
+const titleRef = ref(null);
+const itemRefs = ref([]);
 
 let ctx = null;
 
-onMounted(() => {
-  // GSAP animations
+const initAnimations = async () => {
+  if (ctx) {
+    ctx.revert();
+    ctx = null;
+  }
+
+  if (!sectionRef.value) return;
+
+  await nextTick();
+
   ctx = gsap.context(() => {
-    // Section title animation
-    gsap.from(".projects-section .section-title", {
+    gsap.from(titleRef.value, {
       scrollTrigger: {
         trigger: sectionRef.value,
         start: "top 80%",
@@ -147,8 +154,7 @@ onMounted(() => {
       ease: "power2.out",
     });
 
-    // Project cards stagger animation
-    cardRefs.value.forEach((el, index) => {
+    itemRefs.value.forEach((el, index) => {
       if (el) {
         gsap.from(el, {
           scrollTrigger: {
@@ -157,18 +163,29 @@ onMounted(() => {
             toggleActions: "play none none reverse",
           },
           opacity: 0,
-          y: 60,
-          scale: 0.95,
-          duration: 0.7,
-          delay: index * 0.15,
+          x: index % 2 === 0 ? -100 : 100,
+          duration: 0.8,
+          delay: index * 0.1,
           ease: "power2.out",
         });
       }
     });
-
-    isVisible.value = true;
   }, sectionRef.value);
+
+  ScrollTrigger.refresh();
+};
+
+onMounted(() => {
+  initAnimations();
 });
+
+watch(
+  () => props.data,
+  () => {
+    initAnimations();
+  },
+  { deep: true },
+);
 
 onUnmounted(() => {
   if (ctx) ctx.revert();
@@ -181,185 +198,163 @@ onUnmounted(() => {
 .projects-section {
   min-height: 100vh;
   padding: 64px 0;
-  position: relative;
 
   > .section-background {
     position: absolute;
     inset: 0;
-    z-index: 0;
   }
 
   > .parallax-content {
-    > .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-      gap: 32px;
-      max-width: 1200px;
+    > .projects-list {
+      max-width: 900px;
       margin: 0 auto;
-      position: relative;
-      z-index: 1;
+      padding: 32px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
 
-      > .project-card {
-        background: $card-bg;
-        border-radius: 20px;
-        overflow: hidden;
-        box-shadow: $shadow-lg;
-        display: flex;
-        flex-direction: column;
-        transition:
-          transform 0.3s ease,
-          box-shadow 0.3s ease;
+      > .projects-item {
+        position: relative;
 
-        &:hover {
-          transform: translateY(-10px);
-          box-shadow: $shadow-xl;
-        }
+        > .projects-card {
+          padding: 32px;
 
-        > .project-image {
-          position: relative;
-          height: 200px;
-          overflow: hidden;
-          background: $bg-dark;
-
-          > img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-            transform-origin: center;
-          }
-
-          &:hover {
-            > img {
-              transform: scale(1.05);
-            }
-          }
-
-          > .carousel-controls {
-            position: absolute;
-            inset: 0;
+          > .projects-header {
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            padding: 0 8px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            pointer-events: none;
-            z-index: 3;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 8px;
 
-            > .carousel-btn {
-              width: 32px;
-              height: 32px;
-              border-radius: 50%;
-              border: none;
-              background: rgba(255, 255, 255, 0.85);
-              color: $primary-dark;
-              font-size: 19.2px;
-              cursor: pointer;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              box-shadow: $shadow-sm;
+            > .project-name {
+              font-size: 24px;
+              font-weight: 700;
+              color: $text-primary;
+              margin: 0;
             }
-          }
-
-          > .carousel-dots {
-            position: absolute;
-            bottom: 8px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 6.4px;
-            padding: 4.8px 9.6px;
-            background: rgba(0, 0, 0, 0.35);
-            border-radius: 999px;
-            z-index: 3;
-
-            > .dot {
-              width: 8px;
-              height: 8px;
-              border-radius: 50%;
-              background: rgba(255, 255, 255, 0.5);
-              cursor: pointer;
-
-              &.active {
-                background: white;
-              }
-            }
-          }
-
-          > .project-image-caption {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 7.2px 12px;
-            font-size: 13.6px;
-            color: white;
-            background: linear-gradient(
-              180deg,
-              rgba(0, 0, 0, 0),
-              rgba(0, 0, 0, 0.6)
-            );
-            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
-          }
-        }
-
-        &:hover {
-          > .project-image {
-            > .carousel-controls {
-              opacity: 1;
-              pointer-events: auto;
-            }
-          }
-        }
-
-        > .project-info {
-          padding: 24px;
-          flex: 1;
-
-          > .project-name {
-            font-size: 20px;
-            font-weight: 700;
-            color: $text-primary;
-            margin: 0 0 12px;
           }
 
           > .project-description {
             color: $text-secondary;
-            line-height: 1.6;
+            line-height: 1.7;
             margin-bottom: 16px;
+          }
+
+          > .project-image {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+            background: $bg-dark;
+            border-radius: 12px;
+            margin-bottom: 16px;
+
+            > img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+              transition: transform 0.5s ease;
+              transform-origin: center;
+              display: block;
+            }
+
+            &:hover {
+              > img {
+                transform: scale(1.05);
+              }
+            }
+
+            > .carousel-controls {
+              position: absolute;
+              inset: 0;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              padding: 0 8px;
+              opacity: 0;
+              transition: opacity 0.3s ease;
+              pointer-events: none;
+              z-index: 3;
+
+              > .carousel-btn {
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                border: none;
+                background: rgba(255, 255, 255, 0.85);
+                color: $primary-dark;
+                font-size: 19.2px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: $shadow-sm;
+              }
+            }
+
+            > .carousel-dots {
+              position: absolute;
+              bottom: 8px;
+              left: 50%;
+              transform: translateX(-50%);
+              display: flex;
+              gap: 6.4px;
+              padding: 4.8px 9.6px;
+              background: rgba(0, 0, 0, 0.35);
+              border-radius: 999px;
+              z-index: 3;
+
+              > .dot {
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.5);
+                cursor: pointer;
+
+                &.active {
+                  background: white;
+                }
+              }
+            }
+
+            > .project-image-caption {
+              position: absolute;
+              bottom: 0;
+              left: 0;
+              right: 0;
+              padding: 7.2px 12px;
+              font-size: 13.6px;
+              color: white;
+              background: linear-gradient(
+                180deg,
+                rgba(0, 0, 0, 0),
+                rgba(0, 0, 0, 0.6)
+              );
+              text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+            }
+
+            &:hover {
+              > .carousel-controls {
+                opacity: 1;
+                pointer-events: auto;
+              }
+            }
           }
 
           > .tech-tags {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
-            margin-bottom: 20px;
-          }
-        }
-
-        > .project-link {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 8px;
-          width: 100%;
-          border-radius: 0 0 20px 20px;
-          padding: 15.2px 24px;
-          margin: 0;
-          align-self: stretch;
-          transition: none;
-          box-shadow: none;
-
-          &:hover {
-            transform: none;
-            box-shadow: none;
+            margin-bottom: 4px;
           }
 
-          > .icon {
-            width: 18px;
-            height: 18px;
+          > .project-link {
+            margin-top: 12px;
+            width: 100%;
+            justify-content: center;
+            padding: 12px 20px;
+            font-size: 14.4px;
+            border-radius: 12px;
           }
         }
       }
@@ -370,9 +365,14 @@ onUnmounted(() => {
 @media (max-width: 768px) {
   .projects-section {
     > .parallax-content {
-      > .projects-grid {
-        grid-template-columns: 1fr;
-        padding: 0 16px;
+      > .projects-list {
+        > .projects-item {
+          > .projects-card {
+            > .projects-header {
+              flex-direction: column;
+            }
+          }
+        }
       }
     }
   }

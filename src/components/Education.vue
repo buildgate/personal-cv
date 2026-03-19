@@ -25,7 +25,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted, onUnmounted, watch, nextTick } from "vue";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -44,7 +44,16 @@ const itemRefs = ref([]);
 
 let ctx = null;
 
-onMounted(() => {
+const initAnimations = async () => {
+  if (ctx) {
+    ctx.revert();
+    ctx = null;
+  }
+
+  if (!sectionRef.value) return;
+
+  await nextTick();
+
   // GSAP animations
   ctx = gsap.context(() => {
     // Section title animation
@@ -78,7 +87,21 @@ onMounted(() => {
       }
     });
   }, sectionRef.value);
+
+  ScrollTrigger.refresh();
+};
+
+onMounted(() => {
+  initAnimations();
 });
+
+watch(
+  () => props.data,
+  () => {
+    initAnimations();
+  },
+  { deep: true },
+);
 
 onUnmounted(() => {
   if (ctx) ctx.revert();
