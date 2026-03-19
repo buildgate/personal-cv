@@ -32,14 +32,6 @@
             GitHub
           </a>
         </div>
-        <div class="scroll-indicator">
-          <span>向下滚动</span>
-          <img
-            src="@/assets/icons/scroll-down.svg"
-            alt="向下滚动"
-            class="icon"
-          />
-        </div>
       </div>
     </div>
   </section>
@@ -122,6 +114,8 @@ onMounted(() => {
         "-=0.2",
       );
   }, sectionRef.value);
+
+  // scroll indicator moved to global component
 });
 
 onUnmounted(() => {
@@ -253,37 +247,7 @@ onUnmounted(() => {
           }
         }
       }
-
-      > .scroll-indicator {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 8px;
-        color: rgba(255, 255, 255, 0.6);
-        animation: bounce 2s infinite;
-
-        > .icon {
-          width: 24px;
-          height: 24px;
-        }
-      }
     }
-  }
-}
-
-@keyframes bounce {
-  0%,
-  20%,
-  50%,
-  80%,
-  100% {
-    transform: translateY(0);
-  }
-  40% {
-    transform: translateY(-10px);
-  }
-  60% {
-    transform: translateY(-5px);
   }
 }
 

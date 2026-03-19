@@ -5,6 +5,7 @@
     <Education :data="resumeData.education" />
     <Experience :data="resumeData.experience" />
     <Projects :data="resumeData.projects" />
+    <ScrollIndicator />
     <footer class="footer">
       <p>
         © {{ currentYear }} {{ resumeData.basicInfo.name }}. All rights
@@ -20,6 +21,7 @@ import BasicInfo from "./components/BasicInfo.vue";
 import Education from "./components/Education.vue";
 import Experience from "./components/Experience.vue";
 import Projects from "./components/Projects.vue";
+import ScrollIndicator from "./components/ScrollIndicator.vue";
 
 const resumeData = ref({
   basicInfo: {},

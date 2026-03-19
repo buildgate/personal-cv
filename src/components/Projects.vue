@@ -206,12 +206,12 @@ onUnmounted(() => {
 
   > .parallax-content {
     > .projects-list {
-      max-width: 900px;
+      width: 100%;
       margin: 0 auto;
       padding: 32px 0;
-      display: flex;
-      flex-direction: column;
-      gap: 32px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 24px;
 
       > .projects-item {
         position: relative;
@@ -362,10 +362,31 @@ onUnmounted(() => {
   }
 }
 
+@media (max-width: 1200px) {
+  .projects-section {
+    > .parallax-content {
+      > .projects-list {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+  }
+}
+
+@media (max-width: 992px) {
+  .projects-section {
+    > .parallax-content {
+      > .projects-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+  }
+}
+
 @media (max-width: 768px) {
   .projects-section {
     > .parallax-content {
       > .projects-list {
+        grid-template-columns: 1fr;
         > .projects-item {
           > .projects-card {
             > .projects-header {
