@@ -165,204 +165,199 @@ onUnmounted(() => {
 
 .experience-section {
   min-height: 100vh;
-  padding: 4rem 0;
-}
+  padding: 64px 0;
 
-.section-background {
-  position: absolute;
-  inset: 0;
-}
-
-.gradient-bg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background:
-    radial-gradient(
-      ellipse at 30% 20%,
-      rgba($primary-color, 0.15) 0%,
-      transparent 50%
-    ),
-    radial-gradient(
-      ellipse at 70% 80%,
-      rgba($secondary-color, 0.1) 0%,
-      transparent 50%
-    );
-}
-
-.experience-list {
-  max-width: 900px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-
-.experience-item {
-  position: relative;
-  overflow: hidden;
-}
-
-.experience-item::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 4px;
-  height: 100%;
-  background: $gradient-mixed;
-}
-
-.experience-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 1rem;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-
-.company-info {
-  flex: 1;
-}
-
-.company-name {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: $text-primary;
-  margin: 0 0 0.25rem;
-}
-
-.position {
-  font-size: 1.1rem;
-  color: $primary-dark;
-  font-weight: 500;
-  margin: 0;
-}
-
-.period-badge {
-  background: $gradient-primary;
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 25px;
-  font-size: 0.875rem;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-.description {
-  color: $text-secondary;
-  line-height: 1.7;
-  margin-bottom: 1.5rem;
-}
-
-.experience-gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-}
-
-.gallery-toggle {
-  align-self: flex-start;
-  margin: 0 0 1.5rem;
-  padding: 0.4rem 1rem;
-  border-radius: 999px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  background: white;
-  color: $primary-dark;
-  font-size: 0.875rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-
-  &:hover {
-    border-color: rgba($primary-color, 0.5);
-    color: $primary-color;
-    box-shadow: $shadow-sm;
+  > .section-background {
+    position: absolute;
+    inset: 0;
   }
-}
 
-.gallery-item {
-  border-radius: 12px;
-  overflow: hidden;
-  background: rgba(255, 255, 255, 0.6);
-  box-shadow: $shadow-md;
-}
+  > .parallax-content {
+    > .experience-list {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
 
-.gallery-item img {
-  width: 100%;
-  height: 140px;
-  object-fit: cover;
-  display: block;
-  transition: transform 0.5s ease;
-  transform-origin: center;
-}
+      > .experience-item {
+        position: relative;
+        overflow: hidden;
 
-.gallery-item:hover img {
-  transform: scale(1.05);
-}
+        &::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 4px;
+          height: 100%;
+          background: $gradient-mixed;
+        }
 
-.gallery-caption {
-  padding: 0.5rem 0.75rem 0.75rem;
-  font-size: 0.9rem;
-  color: $text-secondary;
-  line-height: 1.4;
-  background: rgba(255, 255, 255, 0.8);
-}
+        > .experience-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          margin-bottom: 16px;
+          flex-wrap: wrap;
+          gap: 16px;
 
-.achievements {
-  background: rgba($primary-light, 0.3);
-  border-radius: 12px;
-  padding: 1.25rem;
-}
+          > .company-info {
+            flex: 1;
 
-.achievements-title {
-  font-size: 1rem;
-  font-weight: 600;
-  color: $text-primary;
-  margin: 0 0 0.75rem;
-}
+            > .company-name {
+              font-size: 24px;
+              font-weight: 700;
+              color: $text-primary;
+              margin: 0 0 4px;
+            }
 
-.achievements-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
+            > .position {
+              font-size: 17.6px;
+              color: $primary-dark;
+              font-weight: 500;
+              margin: 0;
+            }
+          }
 
-.achievements-list li {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.75rem;
-  color: $text-secondary;
-  line-height: 1.5;
-}
+          > .period-badge {
+            background: $gradient-primary;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+          }
+        }
 
-.achievements-list li svg {
-  flex-shrink: 0;
-  color: $secondary-color;
-  margin-top: 2px;
+        > .description {
+          color: $text-secondary;
+          line-height: 1.7;
+          margin-bottom: 24px;
+        }
+
+        > .experience-gallery {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+          gap: 16px;
+          margin-bottom: 24px;
+
+          > .gallery-item {
+            border-radius: 12px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.6);
+            box-shadow: $shadow-md;
+
+            > img {
+              width: 100%;
+              height: 140px;
+              object-fit: cover;
+              display: block;
+              transition: transform 0.5s ease;
+              transform-origin: center;
+            }
+
+            &:hover {
+              > img {
+                transform: scale(1.05);
+              }
+            }
+
+            > .gallery-caption {
+              padding: 8px 12px 12px;
+              font-size: 14.4px;
+              color: $text-secondary;
+              line-height: 1.4;
+              background: rgba(255, 255, 255, 0.8);
+            }
+          }
+        }
+
+        > .gallery-toggle {
+          align-self: flex-start;
+          margin: 0 0 24px;
+          padding: 6.4px 16px;
+          border-radius: 999px;
+          border: 1px solid rgba(0, 0, 0, 0.1);
+          background: white;
+          color: $primary-dark;
+          font-size: 14px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+
+          &:hover {
+            border-color: rgba($primary-color, 0.5);
+            color: $primary-color;
+            box-shadow: $shadow-sm;
+          }
+        }
+
+        > .achievements {
+          background: rgba($primary-light, 0.3);
+          border-radius: 12px;
+          padding: 20px;
+
+          > .achievements-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: $text-primary;
+            margin: 0 0 12px;
+          }
+
+          > .achievements-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+
+            > li {
+              display: flex;
+              align-items: flex-start;
+              gap: 12px;
+              color: $text-secondary;
+              line-height: 1.5;
+
+              > svg {
+                flex-shrink: 0;
+                color: $secondary-color;
+                margin-top: 2px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 @media (max-width: 768px) {
-  .experience-header {
-    flex-direction: column;
-  }
+  .experience-section {
+    > .parallax-content {
+      > .experience-list {
+        > .experience-item {
+          > .experience-header {
+            flex-direction: column;
 
-  .period-badge {
-    align-self: flex-start;
-  }
+            > .period-badge {
+              align-self: flex-start;
+            }
+          }
 
-  .experience-gallery {
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  }
+          > .experience-gallery {
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
 
-  .gallery-item img {
-    height: 120px;
+            > .gallery-item {
+              > img {
+                height: 120px;
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }
 </style>

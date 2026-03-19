@@ -33,7 +33,9 @@ const appRef = ref(null);
 
 onMounted(async () => {
   try {
-    const response = await fetch("/resume-data.json");
+    const response = await fetch(`/resume-data.json?t=${Date.now()}`, {
+      cache: "no-store",
+    });
     const data = await response.json();
     resumeData.value = data;
 
@@ -51,24 +53,24 @@ onMounted(async () => {
 .resume-app {
   width: 100%;
   position: relative;
-}
 
-.background-layer {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: $bg-dark;
-  z-index: -1;
-  pointer-events: none;
-}
+  > .background-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: $bg-dark;
+    z-index: -1;
+    pointer-events: none;
+  }
 
-.footer {
-  background: $bg-dark;
-  color: $text-light;
-  text-align: center;
-  padding: 2rem;
-  font-size: 0.875rem;
+  > .footer {
+    background: $bg-dark;
+    color: $text-light;
+    text-align: center;
+    padding: 32px;
+    font-size: 14px;
+  }
 }
 </style>

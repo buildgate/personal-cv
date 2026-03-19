@@ -90,71 +90,82 @@ onUnmounted(() => {
 
 .education-section {
   min-height: 100vh;
-  padding: 4rem 0;
-}
+  padding: 64px 0;
+  > .section-background {
+    position: absolute;
+    inset: 0;
+  }
 
-.section-background {
-  position: absolute;
-  inset: 0;
-}
+  > .parallax-content {
+    > .education-list {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 32px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
 
-.education-list {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 2rem 0;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
+      > .education-item {
+        position: relative;
 
-.education-item {
-  position: relative;
-}
+        > .education-card {
+          padding: 32px;
 
-.education-card {
-  padding: 2rem;
-}
+          > .education-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 8px;
 
-.education-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 0.75rem;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
+            > .school-name {
+              font-size: 24px;
+              font-weight: 700;
+              color: $text-primary;
+              margin: 0;
+            }
 
-.school-name {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: $text-primary;
-  margin: 0;
-}
+            > .period {
+              background: $gradient-mixed;
+              color: white;
+              padding: 4px 12px;
+              border-radius: 20px;
+              font-size: 14px;
+              font-weight: 500;
+            }
+          }
 
-.period {
-  background: $gradient-mixed;
-  color: white;
-  padding: 0.25rem 0.75rem;
-  border-radius: 20px;
-  font-size: 0.875rem;
-  font-weight: 500;
-}
+          > .degree {
+            font-size: 17.6px;
+            color: $primary-dark;
+            margin-bottom: 12px;
+            font-weight: 500;
+          }
 
-.degree {
-  font-size: 1.1rem;
-  color: $primary-dark;
-  margin-bottom: 0.75rem;
-  font-weight: 500;
-}
-
-.description {
-  color: $text-secondary;
-  line-height: 1.7;
+          > .description {
+            color: $text-secondary;
+            line-height: 1.7;
+          }
+        }
+      }
+    }
+  }
 }
 
 @media (max-width: 768px) {
-  .education-header {
-    flex-direction: column;
+  .education-section {
+    > .parallax-content {
+      > .education-list {
+        > .education-item {
+          > .education-card {
+            > .education-header {
+              flex-direction: column;
+            }
+          }
+        }
+      }
+    }
   }
 }
 </style>
