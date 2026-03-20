@@ -236,6 +236,8 @@ onUnmounted(() => {
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 16px;
             margin-bottom: 16px;
+            max-width: 100%;
+            overflow-x: hidden;
 
             > .gallery-item {
               border-radius: 12px;

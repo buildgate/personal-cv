@@ -212,6 +212,8 @@ onUnmounted(() => {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 24px;
+      max-width: 100%;
+      overflow-x: hidden;
 
       > .projects-item {
         position: relative;
